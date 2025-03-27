@@ -62,6 +62,18 @@ public class BookService {
         return bookRepository.save(existingBook);
     }
 
+    public void deleteBookById(String bookId) {
+        Optional<Book> optionalBook = bookRepository.findBookByBookId(bookId);
+        if (optionalBook.isPresent()) {
+            bookRepository.deleteById(optionalBook.get().getId());
+
+        } else {
+            throw new RuntimeException("Book not found with bookId" + bookId);
+        }
+    }
+
+
+
 
 
 }
