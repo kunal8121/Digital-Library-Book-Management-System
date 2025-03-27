@@ -38,7 +38,7 @@ public class BookController {
             Book book = bookService.findById(bookId);
             return ResponseEntity.ok(book);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -48,9 +48,21 @@ public class BookController {
             Book book = bookService.findByTitle(title);
             return ResponseEntity.ok(book);
         } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Book> updateBook(@PathVariable String bookId , @RequestBody Book bookDetails)
+    {
+        try{
+            Book updatedBook = bookService.updateBook(bookId , bookDetails);
+            return new ResponseEntity<>(updatedBook , HttpStatus.OK);
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
 
 
 

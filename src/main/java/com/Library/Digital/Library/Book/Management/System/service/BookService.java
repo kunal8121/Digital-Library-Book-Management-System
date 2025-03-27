@@ -30,7 +30,7 @@ public class BookService {
         if (book.isPresent()) {
             return book.get();
         } else {
-            throw new RuntimeException("Book not found with ID: " + bookId);
+            throw new RuntimeException("Book not found with bookID: " + bookId);
         }
     }
 
@@ -43,6 +43,25 @@ public class BookService {
             throw new RuntimeException("Book not found with title: " + title);
         }
     }
+
+    public Book updateBook(String bookId , Book bookDetails)
+    {
+        Optional<Book> optionalBook = bookRepository.findBookByBookId(bookId);
+
+        if (optionalBook.isEmpty()) {
+            throw new RuntimeException("Book not found! with bookID: " + bookId);
+        }
+        Book existingBook = optionalBook.get();
+
+        existingBook.setBookId(bookDetails.getBookId());
+        existingBook.setAuthor(bookDetails.getAuthor());
+        existingBook.setTitle(bookDetails.getTitle());
+        existingBook.setGenre(bookDetails.getGenre());
+        existingBook.setAvailablilityStatus(bookDetails.getAvailablilityStatus());
+
+        return bookRepository.save(existingBook);
+    }
+
 
 
 }
