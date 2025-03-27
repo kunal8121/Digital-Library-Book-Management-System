@@ -23,9 +23,25 @@ public class BookService {
     {
         return bookRepository.save(book);
     }
-    public Optional<Book> findById(String bookId)
-    {
-        return bookRepository.findBookByBookId(bookId);
+
+    public Book findById(String bookId) {
+        Optional<Book> book = bookRepository.findBookByBookId(bookId);
+
+        if (book.isPresent()) {
+            return book.get();
+        } else {
+            throw new RuntimeException("Book not found with ID: " + bookId);
+        }
+    }
+
+    public Book findByTitle(String title) {
+        Optional<Book> book = bookRepository.findBookByTitle(title);
+
+        if (book.isPresent()) {
+            return book.get();
+        } else {
+            throw new RuntimeException("Book not found with title: " + title);
+        }
     }
 
 

@@ -34,15 +34,24 @@ public class BookController {
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> searchBookById(@PathVariable String bookId)
     {
-        Optional<Book> existing = bookService.findById(bookId);
-
-        if(existing.isPresent())
-        {
-            return new ResponseEntity<>(existing.get() , HttpStatus.OK);
+        try {
+            Book book = bookService.findById(bookId);
+            return ResponseEntity.ok(book);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<Book> searchBookByTitle(@PathVariable String title) {
+        try {
+            Book book = bookService.findByTitle(title);
+            return ResponseEntity.ok(book);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
 
 }
