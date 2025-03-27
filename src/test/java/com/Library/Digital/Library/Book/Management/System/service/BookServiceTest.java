@@ -98,4 +98,82 @@ class BookServiceTest {
 
 
 
+    @Test
+    void testFindByTitle_BookExists() {
+        // Mock repository to return a book when searched by title
+        when(bookRepository.findBookByTitle("Java Programming")).thenReturn(Optional.of(book1));
+
+        // Call the service method
+        Book foundBook = bookService.findByTitle("Java Programming");
+
+        // Assertions
+        assertNotNull(foundBook);
+        assertEquals("Java Programming", foundBook.getTitle());
+        assertEquals("James Gosling", foundBook.getAuthor());
+        assertEquals("Technology", foundBook.getGenre());
+        assertEquals("Available", foundBook.getAvailablilityStatus());
+
+        // Verify interaction with repository
+        verify(bookRepository, times(1)).findBookByTitle("Java Programming");
+    }
+
+    @Test
+    void testFindByTitle_BookNotFound() {
+
+        when(bookRepository.findBookByTitle("C++ Basics")).thenReturn(Optional.empty());
+
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> bookService.findByTitle("C++ Basics"));
+
+
+        assertEquals("Book not found with title: C++ Basics", exception.getMessage());
+
+
+        verify(bookRepository, times(1)).findBookByTitle("C++ Basics");
+    }
+
+    @Test
+    void testUpdateBook_BookExists() {
+        // Mock existing book in repository
+        when(bookRepository.findBookByBookId("B001")).thenReturn(Optional.of(book1));
+
+        // Create updated book details
+        Book updatedBookDetails = new Book(1L, "B001", "Advanced Java", "Joshua Bloch", "Programming", "Unavailable");
+
+        // Mock repository save behavior
+        when(bookRepository.save(any(Book.class))).thenReturn(updatedBookDetails);
+
+        // Call the service method
+        Book updatedBook = bookService.updateBook("B001", updatedBookDetails);
+
+        // Assertions
+        assertNotNull(updatedBook);
+        assertEquals("B001", updatedBook.getBookId());
+        assertEquals("Advanced Java", updatedBook.getTitle());
+        assertEquals("Joshua Bloch", updatedBook.getAuthor());
+        assertEquals("Programming", updatedBook.getGenre());
+        assertEquals("Unavailable", updatedBook.getAvailablilityStatus());
+
+        // Verify repository interactions
+        verify(bookRepository, times(1)).findBookByBookId("B001");
+        verify(bookRepository, times(1)).save(any(Book.class));
+    }
+
+    @Test
+    void testDeleteBookById_BookExists() {
+
+        when(bookRepository.findBookByBookId("B001")).thenReturn(Optional.of(book1));
+
+
+        bookService.deleteBookById("B001");
+
+
+        verify(bookRepository, times(1)).deleteById(book1.getId());
+        verify(bookRepository, times(1)).findBookByBookId("B001");
+    }
+
+
+
+
+
 }

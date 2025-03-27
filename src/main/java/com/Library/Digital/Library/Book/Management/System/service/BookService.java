@@ -16,14 +16,12 @@ public class BookService {
 
 
     //   Logic to Retrieve all books from the database.
-    public List<Book> getAll()
-    {
+    public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
     //  Logic to  Add a new book to the database.
-    public Book addBook(Book book)
-    {
+    public Book addBook(Book book) {
         return bookRepository.save(book);
     }
 
@@ -51,8 +49,7 @@ public class BookService {
     }
 
     //  Logic to  Update details of an existing book.
-    public Book updateBook(String bookId , Book bookDetails)
-    {
+    public Book updateBook(String bookId, Book bookDetails) {
         Optional<Book> optionalBook = bookRepository.findBookByBookId(bookId);
 
         if (optionalBook.isEmpty()) {
@@ -79,10 +76,6 @@ public class BookService {
             throw new RuntimeException("Book not found with bookId" + bookId);
         }
     }
-
-
-
-
 
 }
 
