@@ -12,8 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,6 +52,49 @@ class BookServiceTest {
         verify(bookRepository , times(1)).findAll();
     }
 
+    @Test
+    void testAddBook() {
+
+        when(bookRepository.save(book1)).thenReturn(book1);
+
+        Book savedBook = bookService.addBook(book1);
+
+        assertEquals(book1, savedBook);
+        verify(bookRepository, times(1)).save(book1);
+    }
+    @Test
+    void testFindById_BookExists() {
+
+        when(bookRepository.findBookByBookId("B001")).thenReturn(Optional.of(book1));
+
+
+        Book foundBook = bookService.findById("B001");
+
+
+        assertNotNull(foundBook);
+        assertEquals("Java Programming", foundBook.getTitle());
+        assertEquals("James Gosling", foundBook.getAuthor());
+        assertEquals("Technology", foundBook.getGenre());
+        assertEquals("Available", foundBook.getAvailablilityStatus());
+
+
+        verify(bookRepository, times(1)).findBookByBookId("B001");
+    }
+
+    @Test
+    void testFindById_BookNotFound() {
+
+        when(bookRepository.findBookByBookId("B003")).thenReturn(Optional.empty());
+
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> bookService.findById("B003"));
+
+
+        assertEquals("Book not found with bookID: B003", exception.getMessage());
+
+
+        verify(bookRepository, times(1)).findBookByBookId("B003");
+    }
 
 
 
