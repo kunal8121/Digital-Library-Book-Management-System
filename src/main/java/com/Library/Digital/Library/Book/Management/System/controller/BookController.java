@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -28,7 +29,20 @@ public class BookController {
     {
         bookService.addBook(book);
         return new ResponseEntity<>(book , HttpStatus.OK);
-
     }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Book> searchBookById(@PathVariable String bookId)
+    {
+        Optional<Book> existing = bookService.findById(bookId);
+
+        if(existing.isPresent())
+        {
+            return new ResponseEntity<>(existing.get() , HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
 }
