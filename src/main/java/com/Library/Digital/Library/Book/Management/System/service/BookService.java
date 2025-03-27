@@ -14,16 +14,21 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+
+    //   Logic to Retrieve all books from the database.
     public List<Book> getAll()
     {
         return bookRepository.findAll();
     }
 
+    //  Logic to  Add a new book to the database.
     public Book addBook(Book book)
     {
         return bookRepository.save(book);
     }
 
+
+    //  Logic to  Retrieve a book by its unique ID.
     public Book findById(String bookId) {
         Optional<Book> book = bookRepository.findBookByBookId(bookId);
 
@@ -34,6 +39,7 @@ public class BookService {
         }
     }
 
+    //  Logic to  Retrieve a book by its Title.
     public Book findByTitle(String title) {
         Optional<Book> book = bookRepository.findBookByTitle(title);
 
@@ -44,6 +50,7 @@ public class BookService {
         }
     }
 
+    //  Logic to  Update details of an existing book.
     public Book updateBook(String bookId , Book bookDetails)
     {
         Optional<Book> optionalBook = bookRepository.findBookByBookId(bookId);
@@ -62,6 +69,7 @@ public class BookService {
         return bookRepository.save(existingBook);
     }
 
+    //  Logic to  Delete a book by its ID.
     public void deleteBookById(String bookId) {
         Optional<Book> optionalBook = bookRepository.findBookByBookId(bookId);
         if (optionalBook.isPresent()) {

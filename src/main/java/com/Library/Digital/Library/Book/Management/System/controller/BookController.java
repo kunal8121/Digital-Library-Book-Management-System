@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -18,12 +17,15 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+
+//   API to Retrieve all books from the database.
     @GetMapping("/allbook")
     public List<Book> viewAllBooks()
     {
         return  bookService.getAll();
     }
 
+//  API to  Add a new book to the database.
     @PostMapping("/addBook")
     public ResponseEntity<Book> addBook(@RequestBody Book book)
     {
@@ -31,6 +33,8 @@ public class BookController {
         return new ResponseEntity<>(book , HttpStatus.OK);
     }
 
+
+//  API to  Retrieve a book by its unique ID.
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> searchBookById(@PathVariable String bookId)
     {
@@ -42,6 +46,8 @@ public class BookController {
         }
     }
 
+
+//   API to Retrieve a book by its title.
     @GetMapping("/title/{title}")
     public ResponseEntity<Book> searchBookByTitle(@PathVariable String title) {
         try {
@@ -52,6 +58,8 @@ public class BookController {
         }
     }
 
+
+//  API to  Update details of an existing book.
     @PutMapping("/{bookId}")
     public ResponseEntity<Book> updateBook(@PathVariable String bookId , @RequestBody Book bookDetails)
     {
@@ -63,6 +71,8 @@ public class BookController {
         }
     }
 
+
+//  API to  Delete a book by its ID.
     @DeleteMapping("/{bookId}")
     public ResponseEntity<String> deleteBook(@PathVariable String bookId) {
         try {
