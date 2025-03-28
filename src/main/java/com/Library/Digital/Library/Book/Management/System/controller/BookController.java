@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/digital-library")
 public class BookController {
 
 
@@ -19,7 +19,7 @@ public class BookController {
 
 
 //   API to Retrieve all books from the database.
-    @GetMapping("/allbook")
+    @GetMapping("/getAllBooks")
     public List<Book> viewAllBooks()
     {
         return  bookService.getAll();
@@ -35,7 +35,7 @@ public class BookController {
 
 
 //  API to  Retrieve a book by its unique ID.
-    @GetMapping("/{bookId}")
+    @GetMapping("/searchBookById/{bookId}")
     public ResponseEntity<Book> searchBookById(@PathVariable String bookId)
     {
         try {
@@ -48,7 +48,7 @@ public class BookController {
 
 
 //   API to Retrieve a book by its title.
-    @GetMapping("/title/{title}")
+    @GetMapping("/searchBookByTitle/{title}")
     public ResponseEntity<Book> searchBookByTitle(@PathVariable String title) {
         try {
             Book book = bookService.findByTitle(title);
@@ -60,7 +60,7 @@ public class BookController {
 
 
 //  API to  Update details of an existing book.
-    @PutMapping("/{bookId}")
+    @PutMapping("/updateBookById/{bookId}")
     public ResponseEntity<Book> updateBook(@PathVariable String bookId , @RequestBody Book bookDetails)
     {
         try{
@@ -73,7 +73,7 @@ public class BookController {
 
 
 //  API to  Delete a book by its ID.
-    @DeleteMapping("/{bookId}")
+    @DeleteMapping("/deleteBookById/{bookId}")
     public ResponseEntity<String> deleteBook(@PathVariable String bookId) {
         try {
             bookService.deleteBookById(bookId);
