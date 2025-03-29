@@ -30,7 +30,7 @@ public class BookController {
     public ResponseEntity<Book> addBook(@RequestBody Book book)
     {
         bookService.addBook(book);
-        return new ResponseEntity<>(book , HttpStatus.OK);
+        return new ResponseEntity<>(book , HttpStatus.CREATED);
     }
 
 
@@ -61,11 +61,11 @@ public class BookController {
 
 //  API to  Update details of an existing book.
     @PutMapping("/updateBookById/{bookId}")
-    public ResponseEntity<Book> updateBook(@PathVariable String bookId , @RequestBody Book bookDetails)
+    public ResponseEntity<String> updateBook(@PathVariable String bookId , @RequestBody Book bookDetails)
     {
         try{
-            Book updatedBook = bookService.updateBook(bookId , bookDetails);
-            return new ResponseEntity<>(updatedBook , HttpStatus.OK);
+            bookService.updateBook(bookId , bookDetails);
+            return new ResponseEntity<>("Book updated successfully" , HttpStatus.OK);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -82,9 +82,4 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
-
-
-
-
 }
