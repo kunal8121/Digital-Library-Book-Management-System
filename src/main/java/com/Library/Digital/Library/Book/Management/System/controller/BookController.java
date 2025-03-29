@@ -2,6 +2,7 @@ package com.Library.Digital.Library.Book.Management.System.controller;
 
 import com.Library.Digital.Library.Book.Management.System.entity.Book;
 import com.Library.Digital.Library.Book.Management.System.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class BookController {
 
 //  API to  Add a new book to the database.
     @PostMapping("/addBook")
-    public ResponseEntity<Book> addBook(@RequestBody Book book)
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book)
     {
         bookService.addBook(book);
         return new ResponseEntity<>(book , HttpStatus.CREATED);
